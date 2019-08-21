@@ -8,11 +8,11 @@ module.exports = {
       return 0;
     } else if (isNaN(params[0])) {
       channel.send("Please, tell me the number ._.");
-    } else if (parseInt(params[0]) <= 0) {
+    } else if (parseInt(params[0]) <= 1) {
       channel.send("I never saw dice like this!");
     } else {
       channel.send(
-        "I rolled... " + Math.round(Math.random() * params[0]) + "  !"
+        "I rolled... " + Math.round(Math.random() * (params[0] - 1) + 1) + "  !"
       );
     }
   }
