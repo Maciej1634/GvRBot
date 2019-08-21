@@ -5,18 +5,23 @@ const randomFunc = require("../src/basicFunc"); // random-based functions
 const basicFunc = require("../src/basicFunc.js"); // base functions
 
 client.login(config.private.key);
+
+const baseReg = new RegExp(`${config.main.prefix}`);
+
 client.on("message", msg => {
-  //                 TEST MESSAGE
+  if (msg.content.match(baseReg)) {
+    //                 TEST MESSAGE
 
-  let reg = new RegExp(`^${config.main.prefix}ping`);
-  if (msg.content.match(reg)) {
-    msg.channel.send("*pong!*");
-  }
-  //                   SHOW
+    let reg = new RegExp(`^${config.main.prefix}ping`);
+    if (msg.content.match(reg)) {
+      msg.channel.send("*pong!*");
+    }
+    //                   SHOW
 
-  reg = new RegExp(`^${config.main.prefix}show`);
-  if (msg.content.match(reg)) {
-    basicFunc.show(msg, basicFunc.parseParams(msg.content));
-    return 0;
+    reg = new RegExp(`^${config.main.prefix}show`);
+    if (msg.content.match(reg)) {
+      basicFunc.show(msg, basicFunc.parseParams(msg.content));
+      return 0;
+    }
   }
 });

@@ -1,9 +1,11 @@
 config = require("../config/config.js");
 
 module.exports = {
-  //                                          Show required values
+  //                                          Show requested values
   show: (msg, params) => {
-    if (params[0] == "prefix") {
+    if (params.length == 0) {
+      msg.channel.send("What should i show you? Please tell me next time ><");
+    } else if (params[0] == "prefix") {
       msg.channel.send(config.main.prefix);
     } else if (params[0] == "middlefinger") {
       msg.channel.send(".!.");

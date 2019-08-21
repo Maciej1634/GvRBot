@@ -1,3 +1,3 @@
 module.exports = {
-  dice: params => {}
+  dice: (channel, params) => {}
 };
