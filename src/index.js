@@ -3,6 +3,7 @@ const client = new dsc.Client();
 const config = require("../config/config.js");
 const randomFunc = require("../src/randomFunc"); // random-based functions
 const basicFunc = require("../src/basicFunc.js"); // base functions
+const textFunc = require("../src/textFunc.js"); // text functions
 
 client.login(config.private.key);
 
@@ -17,6 +18,11 @@ client.on("message", msg => {
       msg.channel.send("*pong!*");
       return 0;
     }
+    /*
+    //
+    //                  BASIC FUNCTIONS                 
+    //
+    */
     //                   SHOW
 
     reg = new RegExp(`^${config.main.prefix}show`);
@@ -24,12 +30,26 @@ client.on("message", msg => {
       basicFunc.show(msg.channel, basicFunc.parseParams(msg.content));
       return 0;
     }
-
+    /*
+    //
+    //                   RANDOM FUNCTIONS                        
+    //
+    */
     //                      DICE
     reg = new RegExp(`^${config.main.prefix}dice`);
     if (msg.content.match(reg)) {
       randomFunc.dice(msg.channel, basicFunc.parseParams(msg.content));
       return 0;
+    }
+    /*
+    //
+    //                   TEXT FUNCTIONS                        
+    //
+    */
+    //         UP AND DOWN
+    reg = new RegExp(`^${config.main.prefix}updown`);
+    if (msg.content.match(reg)) {
+      textFunc.upDown(msg);
     }
   }
 });
