@@ -21,5 +21,44 @@ module.exports = {
     let x = basicFunc.parseParams(msg.content).join(" ");
     msg.channel.send(`${msg.author}: *${x}*`);
     msg.delete();
+  },
+  //               TODD:      translate the message to pokemon language
+  pokelang: msg => {
+    const translate = {
+      a: "@",
+      b: "8",
+      c: "(",
+      d: "|]",
+      e: "3",
+      f: "|=",
+      g: "6",
+      h: "|-|",
+      i: "1",
+      j: "_|",
+      k: "|<",
+      l: "|_",
+      m: "^^",
+      n: "|\\|",
+      o: "0",
+      p: "|>",
+      r: "\u02C5",
+      s: "ⓢ",
+      t: "+",
+      u: "\\/",
+      w: "\\/\\/",
+      x: "><",
+      y: "\\'",
+      z: "5"
+    };
+    msg.channel.send(
+      `${msg.author}: ${basicFunc
+        .parseParams(msg.content)
+        .join(" ")
+        .toLowerCase()
+        .split(" ")
+        .map(a => translate[a.toLowerCase()])
+        .join(" ")}`
+    );
+    msg.delete();
   }
 };
