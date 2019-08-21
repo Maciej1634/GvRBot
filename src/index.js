@@ -8,8 +8,8 @@ client.login(config.private.key);
 
 const baseReg = new RegExp(`${config.main.prefix}`);
 client.once("ready", () => {
-  client.user.setActivity(config.main.activityText, {
-    type: `${config.main.activityType}`
+  client.user.setActivity(config.main.activity.text, {
+    type: `${config.main.activity.type}`
   });
 });
 
@@ -50,10 +50,16 @@ client.on("message", msg => {
     //                   TEXT FUNCTIONS                        
     //
     */
-    //         UP AND DOWN
+    //                   UP AND DOWN
     reg = new RegExp(`^${config.main.prefix}updown`);
     if (msg.content.match(reg)) {
       textFunc.upDown(msg);
+      return 0;
+    }
+    reg = new RegExp(`^${config.main.prefix}story`);
+    if (msg.content.match(reg)) {
+      textFunc.story(msg);
+      return 0;
     }
   }
 });

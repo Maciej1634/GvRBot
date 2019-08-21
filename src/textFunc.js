@@ -15,5 +15,11 @@ module.exports = {
       .join(" ");
     msg.channel.send(`${msg.author}: ${x}`);
     msg.delete();
+  },
+  //                    change message to cursive   TODO: sth interesting ;)
+  story: msg => {
+    let x = basicFunc.parseParams(msg.content).join(" ");
+    msg.channel.send(`${msg.author}: *${x}*`);
+    msg.delete();
   }
 };
