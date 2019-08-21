@@ -1,13 +1,17 @@
 const dsc = require("discord.js");
-const client = new dsc.Client();
 const config = require("../config/config.js");
 const randomFunc = require("../src/randomFunc"); // random-based functions
 const basicFunc = require("../src/basicFunc.js"); // base functions
 const textFunc = require("../src/textFunc.js"); // text functions
-
+const client = new dsc.Client();
 client.login(config.private.key);
 
 const baseReg = new RegExp(`${config.main.prefix}`);
+client.once("ready", () => {
+  client.user.setActivity(config.main.activityText, {
+    type: `${config.main.activityType}`
+  });
+});
 
 client.on("message", msg => {
   if (msg.content.match(baseReg)) {
