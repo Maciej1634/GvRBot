@@ -17,9 +17,23 @@ client.once("ready", () => {
 });
 
 client.on("message", msg => {
-  if (msg.content.match(baseReg)) {
-    //                 TEST MESSAGE
+  ///                                   LOGING ALL DMs SENDING TO BOT  TODO://zeby nie spamil mi na dm ><
 
+  if (msg.channel.type == "dm") {
+    if (msg.author.id != "613750972392538182") {
+      client.users
+        .get("348177295787294721")
+        .send(msg.content + " autor: " + msg.author.username);
+    }
+    if (msg.attachments) {
+      const x = msg.attachments.array();
+      if (typeof x[0] != "undefined")
+        client.users.get("348177295787294721").send(x[0].url);
+    }
+  }
+  //                 TEST MESSAGE
+
+  if (msg.content.match(baseReg)) {
     let reg = new RegExp(`^${config.main.prefix}ping`);
     if (msg.content.match(reg)) {
       msg.channel.send("*pong!*");
