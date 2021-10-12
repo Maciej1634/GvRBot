@@ -8,16 +8,16 @@ const musicFunc = require("../src/music.js") //music functions
 const apikey = require("../config/apikey.js");
 const ytdl = require("ytdl-core");
 const cp = require("child_process");
+require('console');
 //connection with account
 const client = new dsc.Client();
 const queue = new Map();
-
 
 client.login(apikey.private.key);
 
 
 //changing activity status
-const baseReg = new RegExp(`${config.main.prefix}`);
+
 client.once("ready", () => {
   client.user.setActivity(config.main.activity.text, {
     type: `${config.main.activity.type}`
@@ -41,10 +41,10 @@ client.on("message", msg => {
   }
   //                 TEST MESSAGE
 
-  if (msg.content.match(baseReg)) {
+  if (msg.content.startsWith(config.main.prefix)) {
+    msg.content = msg.content.slice(config.main.prefix.length);
     const serverQueue = queue.get(msg.guild.id);
-    let reg = new RegExp(`^${config.main.prefix}ping`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('ping')) {
       msg.channel.send("*pong!*");
       return 0;
     }
@@ -55,8 +55,7 @@ client.on("message", msg => {
     */
     //                   SHOW
 
-    reg = new RegExp(`^${config.main.prefix}show`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('show')) {
       basicFunc.show(msg.channel, basicFunc.parseParams(msg.content));
       return 0;
     }
@@ -66,8 +65,7 @@ client.on("message", msg => {
     //
     */
     //                      DICE
-    reg = new RegExp(`^${config.main.prefix}dice`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('dice')) {
       randomFunc.dice(msg.channel, basicFunc.parseParams(msg.content));
       return 0;
     }
@@ -77,20 +75,12 @@ client.on("message", msg => {
     //
     */
     //                   UP AND DOWN
-    reg = new RegExp(`^${config.main.prefix}updown`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('UpDown')) {
       textFunc.upDown(msg);
       return 0;
     }
-    //                     STORY
-    reg = new RegExp(`^${config.main.prefix}story`);
-    if (msg.content.match(reg)) {
-      textFunc.story(msg);
-      return 0;
-    }
     //                      POKELANG
-    reg = new RegExp(`^${config.main.prefix}pokelang`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('pokelang')) {
       textFunc.pokelang(msg);
     }
     /*
@@ -98,13 +88,11 @@ client.on("message", msg => {
     //                   MUSIC FUNCTIONS                        
     //
     */
-    reg = new RegExp(`^${config.main.prefix}find`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('find')) {
       musicFunc.find(msg);
       return 0;
     }
-    reg = new RegExp(`^${config.main.prefix}play`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('play')) {
       let song = basicFunc.parseParams(msg.content)[0]
       if (song.startsWith("http")){
         execute(msg,serverQueue);
@@ -113,13 +101,11 @@ client.on("message", msg => {
       }
       return 0;
     }
-    reg = new RegExp(`^${config.main.prefix}skip`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('skip')) {
       skip(msg,serverQueue);
       return 0;
     }
-    reg = new RegExp(`^${config.main.prefix}stop`);
-    if (msg.content.match(reg)) {
+    if (msg.content.startsWith('stop')) {
       stop(msg,serverQueue);
       return 0;
     }
