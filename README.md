@@ -1,0 +1,2 @@
+# GvRBot
+Simple Discord Bot
