@@ -15,5 +15,6 @@ module.exports = {
         "I rolled... " + Math.round(Math.random() * (params[0] - 1) + 1) + "  !"
       );
     }
-  }
+  },
+  
 };

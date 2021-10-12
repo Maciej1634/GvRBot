@@ -50,6 +50,7 @@ module.exports = {
       y: "\\'",
       z: "5"
     };
+    try{
     msg.channel.send(
       `${msg.author}: ${basicFunc
         .parseParams(msg.content)
@@ -58,7 +59,10 @@ module.exports = {
         .split(" ")
         .map(a => translate[a.toLowerCase()])
         .join(" ")}`
-    );
+        );
     msg.delete();
+      }catch{
+      
+      }
   }
 };
