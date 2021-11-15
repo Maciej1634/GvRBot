@@ -1,20 +1,17 @@
 const dsc = require("discord.js");
-const python = require("python-shell");
 const config = require("../config/config.js");
 const randomFunc = require("../src/randomFunc.js"); // random-based functions
 const basicFunc = require("../src/basicFunc.js"); // base functions
 const textFunc = require("../src/textFunc.js"); // text functions
 const musicFunc = require("../src/music.js") //music functions
 const apikey = require("../config/apikey.js");
-const ytdl = require("ytdl-core");
-const cp = require("child_process");
 require('console');
 //connection with account
 const client = new dsc.Client();
-var ytm = new musicFunc.YTMusic();
-
 client.login(apikey.private.key);
 
+//Youtube-music init
+var ytm = new musicFunc.YTMusic();
 
 //changing activity status
 
@@ -93,10 +90,14 @@ client.on("message", msg => {
     // }
     if (msg.content.startsWith('play')) {
       let song = basicFunc.parseParams(msg.content)[0]
-      if (song.startsWith("http")){
-        ytm.exec(msg, song)
+      if(song.match(/playlist[\?]/)){
+        ytm.findPlayList(msg, song);
       }else{
-        ytm.find(msg);
+        if (song.startsWith("https://")){
+          ytm.exec(msg, song)
+        }else{
+          ytm.find(msg);
+        }
       }
       return 0;
     }

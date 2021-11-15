@@ -1,8 +1,12 @@
 const cp = require("child_process");
 const ytdl = require("ytdl-core");
 const dsc = require("discord.js");
+const apikey = require("../config/apikey.js");
 const basicFunc = require("../src/basicFunc.js"); // base functions
-const util = require("util")
+const util = require("util");
+const YouTube = require('simple-youtube-api');
+const ytapi = new YouTube(apikey.private.youtube);
+const cookies = apikey.private.cookies;
 require("http");
 const exec = util.promisify(require('child_process').exec);
 ////////////////////////////////////////////////
@@ -12,7 +16,7 @@ class YTMusic{
     constructor(){
         this.queue = new Map();
     }
-    async exec(message, songURL){
+    async exec(message, songURL,playlist=false){
         //Get the voiceChannel reference
         const voiceChannel = message.member.voice.channel;
         //If Sender is not connected to voice channel
@@ -27,11 +31,12 @@ class YTMusic{
             return message.channel.send("I don't have enough permissions to join this VC");
         }
         //Get the song info
-        const songInfo = await ytdl.getInfo(songURL);
+        // const songInfo = await ytdl.getBasicInfo(songURL);
         //Save the song info
         const song = {
-            title: songInfo.videoDetails.title,
-            url: songInfo.videoDetails.video_url,
+            // title: songInfo.videoDetails.title,
+            // url: songInfo.videoDetails.video_url,
+            url: songURL
        };
        //Get the server ID
        const serverId = message.guild.id;
@@ -60,8 +65,13 @@ class YTMusic{
             return message.channel.send("error: "+error);
         }
         }else {
-            this.queue.get(serverId).songs.push(song);
-            return message.channel.send(`${song.title} has been added to the queue!`);
+            if(this.queue.get(serverId).songs.playing == false){
+                this.play(serverId,song)
+            }
+            else{
+                this.queue.get(serverId).songs.push(song);
+            }
+            return playlist? 0: message.channel.send(`${song.title} has been added to the queue!`);
         }
     }
     async skip(message) {
@@ -85,16 +95,19 @@ class YTMusic{
         //Get the server queue reference
         const q = this.queue.get(guild);
         if (!song && q !== undefined) {
-          q.voiceChannel.leave();
-          this.queue.delete(guild.id);
-          return;
+            this.queue.get(guild).playing = false;
+            this.queue.get(guild).voiceChannel.leave();
+            this.queue.delete(guild);
+            return;
         }
         var that = this;
+        console.log("im here");
         const dispatcher = q.connection
-            .play(ytdl(song.url))
-            .on("finish", (that  = that, guild = guild, q = q) => {
+            .play(ytdl(song.url,  { filter: "audioonly",requestOptions: {headers: {cookie: cookies}}}))
+            .on("finish", (t  = that, g = guild, qu = q) => {
+                t.queue.get(g).playing = true;
                 q.songs.shift();
-                play(guild, q.songs[0]);
+                t.play(g, qu.songs[0]);
           })
           .on("error", error => console.error(error));
         
@@ -111,6 +124,28 @@ class YTMusic{
         }else{
             this.exec(message,stdout)
         }
+    }
+
+    findPlayList(msg, list){
+        var that = this;
+        var count = 0;
+        ytapi.getPlaylist(list)
+        .then(playlist => {
+            playlist.getVideos()
+                .then(videos => {
+                    videos.forEach(element => {
+                        if(element.title != 'Deleted video'){
+                            that.exec(msg,"https://www.youtube.com/watch?v="+element.id,playlist = true);
+                            count++;
+                        }
+                        
+                    })
+                    msg.channel.send(`Added ${count} songs`);
+                })
+                .catch(console.log);
+        })
+        .catch(console.log);
+       
     }
 }
 
