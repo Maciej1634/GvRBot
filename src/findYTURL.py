@@ -7,6 +7,4 @@ with open("queries.txt","a") as f:
 r = requests.get(query)
 match = re.findall(r"watch\?v=(\S{11})",r.text)
 print("https://www.youtube.com/watch?v="+match[0])
-with open("queries.txt","a") as f:
-    f.write("https://www.youtube.com/watch?v="+match[0]+"\n")
 sys.stdout.flush()

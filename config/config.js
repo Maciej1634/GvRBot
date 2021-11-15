@@ -1,6 +1,6 @@
 module.exports = {
   main: {
-    prefix: "g!",
+    prefix: "!",
     activity: {
       text: "Your suffer",
       type: "WATCHING"
