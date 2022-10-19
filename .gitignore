@@ -1,3 +1,5 @@
 node_modules
 queries.txt
 config/apikey.js
+src/__pycache__/*
+speaking_turtle.js

@@ -2,7 +2,7 @@ module.exports = {
   main: {
     prefix: "!",
     activity: {
-      text: "Your suffer",
+      text: "hello there",
       type: "WATCHING"
     }
   },

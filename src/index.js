@@ -5,10 +5,16 @@ const basicFunc = require("../src/basicFunc.js"); // base functions
 const textFunc = require("../src/textFunc.js"); // text functions
 const musicFunc = require("../src/music.js") //music functions
 const apikey = require("../config/apikey.js");
+//const { Speaking_turtle } = require("./speaking_turtle.js");
 require('console');
 //connection with account
+
 const client = new dsc.Client();
+
 client.login(apikey.private.key);
+
+
+
 
 //Youtube-music init
 var ytm = new musicFunc.YTMusic();
@@ -23,7 +29,8 @@ client.once("ready", () => {
 
 client.on("message", msg => {
   ///                                   LOGING ALL DMs SENDING TO BOT  TODO://zeby nie spamil mi na dm ><
-
+  console.log("widze");
+  try{
   if (msg.channel.type == "dm") {
     if (msg.author.id != "613750972392538182") {
       client.users
@@ -37,11 +44,13 @@ client.on("message", msg => {
     }
   }
   //                 TEST MESSAGE
-
+  console.log(msg.content.length);
   if (msg.content.startsWith(config.main.prefix)) {
     msg.content = msg.content.slice(config.main.prefix.length);
+    
     if (msg.content.startsWith('ping')) {
       msg.channel.send("*pong!*");
+      console.log("ping");
       return 0;
     }
     /*
@@ -105,11 +114,19 @@ client.on("message", msg => {
       ytm.skip(msg);
       return 0;
     }
+    if (msg.content.startsWith('shuffle')) {
+      ytm.shuffle(msg);
+      msg.channel.send("Shuffled!");
+      return 0;
+    }
     if (msg.content.startsWith('stop')) {
       ytm.stop(msg);
       return 0;
     }
   }
+}catch(err){
+  msg.channel.send("Error: ");
+  msg.channel.send(err);
+}
 });
-
 
