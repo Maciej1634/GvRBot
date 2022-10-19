@@ -4,7 +4,7 @@
   "description": "GiverRPG-focused bot",
   "main": "index.js",
   "dependencies": {
-    "@discordjs/opus": "^0.5.3",
+    "@discordjs/opus": "^0.8.0",
     "avconv": "^3.1.0",
     "discord": "^0.8.2",
     "discord.js": "^12.5.3",
